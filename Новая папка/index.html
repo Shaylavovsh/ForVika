@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Для тебя</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 180, 200, 0.35), transparent 30%),
+                radial-gradient(circle at 80% 80%, rgba(190, 170, 255, 0.3), transparent 30%),
+                linear-gradient(135deg, #fff1f5, #f5f0ff);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #3d3440;
+        }
+
+        /* Плавающие сердечки */
+
+        .heart {
+            position: fixed;
+            bottom: -50px;
+            font-size: 20px;
+            opacity: 0.5;
+            animation: float 8s linear infinite;
+            pointer-events: none;
+        }
+
+        .heart:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .heart:nth-child(2) {
+            left: 30%;
+            animation-delay: 2s;
+        }
+
+        .heart:nth-child(3) {
+            left: 55%;
+            animation-delay: 4s;
+        }
+
+        .heart:nth-child(4) {
+            left: 80%;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(30deg);
+                opacity: 0;
+            }
+        }
+
+        /* Главная карточка */
+
+        .card {
+            width: min(92%, 500px);
+            padding: 42px 30px;
+            border-radius: 30px;
+
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(18px);
+
+            border: 1px solid rgba(255, 255, 255, 0.8);
+
+            box-shadow:
+                0 25px 70px rgba(120, 80, 120, 0.18);
+
+            text-align: center;
+
+            animation: appear 0.8s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(25px) scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .small {
+            font-size: 14px;
+            color: #a48fa0;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: #493c48;
+        }
+
+        .question {
+            font-size: 19px;
+            line-height: 1.5;
+            margin: 25px 0;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 13px 23px;
+            border-radius: 50px;
+
+            font-size: 15px;
+            cursor: pointer;
+
+            background: #f2d6e2;
+            color: #5a4552;
+
+            transition: 0.25s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(160, 100, 130, 0.2);
+        }
+
+        button.primary {
+            background: linear-gradient(135deg, #d99ab5, #b99ad9);
+            color: white;
+        }
+
+        /* Поле пароля */
+
+        .password-box {
+            margin-top: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 18px;
+
+            border-radius: 50px;
+            border: 1px solid #eadce5;
+
+            outline: none;
+
+            text-align: center;
+            font-size: 16px;
+
+            background: rgba(255,255,255,0.8);
+
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #c89bb5;
+            box-shadow: 0 0 0 4px rgba(200,155,181,0.12);
+        }
+
+        .error {
+            color: #c76c86;
+            font-size: 13px;
+            margin-top: 12px;
+            min-height: 18px;
+        }
+
+        /* Секретное сообщение */
+
+        .secret {
+            display: none;
+            animation: secretAppear 1s ease;
+        }
+
+        @keyframes secretAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .secret-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .secret h2 {
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+
+        .secret p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #665966;
+        }
+
+        .signature {
+            margin-top: 25px;
+            font-size: 15px;
+            color: #aa8199;
+        }
+
+        /* Скрытие */
+
+        .hidden {
+            display: none;
+        }
+
+        /* Мобильная версия */
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 35px 22px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .question {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Плавающие сердечки -->
+
+    <div class="heart">♡</div>
+    <div class="heart">♡</div>
+    <div class="heart">♡</div>
+    <div class="heart">♡</div>
+
+
+    <div class="card">
+
+        <!-- Вопросы -->
+
+        <div id="questions">
+
+            <div class="small">
+                маленький вопрос от меня
+            </div>
+
+            <h1 id="title">
+                Привет, любимая
+            </h1>
+
+            <div class="question" id="question">
+                Как ты сегодня?
+            </div>
+
+            <div class="buttons" id="buttons">
+                <button onclick="nextQuestion()">
+                    Хорошо
+                </button>
+
+                <button onclick="nextQuestion()">
+                    Очень хорошо
+                </button>
+
+                <button onclick="nextQuestion()">
+                    Немного устала
+                </button>
+            </div>
+
+        </div>
+
+
+        <!-- Пароль -->
+
+        <div id="passwordScreen" class="hidden">
+
+            <div class="small">
+                осталось совсем чуть-чуть...
+            </div>
+
+            <h1>
+                Маленький секрет
+            </h1>
+
+            <div class="question">
+                Введи пароль, дата начинания наших отношений, чтобы увидить секретное сообщение ❤️
+            </div>
+
+            <div class="password-box">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Введите пароль"
+                    onkeydown="handleEnter(event)"
+                >
+
+                <br><br>
+
+                <button class="primary" onclick="checkPassword()">
+                    Открыть
+                </button>
+
+                <div class="error" id="error"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Секрет -->
+
+        <div id="secret" class="secret">
+
+            <div class="secret-icon">
+                ♡
+            </div>
+
+            <h2>
+                Я хочу тебе кое-что сказать
+            </h2>
+
+            <p>
+                Ты очень особенный для меня человек.
+                <br><br>
+
+                Иногда я могу не говорить этого вслух,
+                но мне действительно важно, чтобы ты улыбалась,
+                была счастлива и знала, что рядом есть человек,
+                которому ты небезразлична.
+
+                <br>
+                Я люблю тебя, моя злобная зеленоглака❤️
+                <br><br>
+
+                Спасибо за то, что ты есть.
+                Просто оставайся моей.
+            </p>
+
+            <div class="signature">
+                С теплом от меня ♡
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const questions = [
+            {
+                title: "Привет, любимая",
+                question: "Как ты сегодня?",
+                answers: ["Хорошо", "Очень хорошо", "Немного устала"]
+            },
+
+            {
+                title: "Тогда ещё один вопрос",
+                question: "Ты сегодня улыбалась?",
+                answers: ["Да", "Конечно", "Сейчас улыбаюсь"]
+            },
+
+            {
+                title: "Мне интересно",
+                question: "Ты сейчас в хорошем настроении?",
+                answers: ["Да", "Очень", "Уже лучше"]
+            },
+
+            {
+                title: "И последний вопрос",
+                question: "Ты знала, что заслуживаешь много хорошего?",
+                answers: ["Да", "Теперь знаю", "Мне никто не говорил"]
+            }
+        ];
+
+        let currentQuestion = 0;
+
+
+        function nextQuestion() {
+
+            currentQuestion++;
+
+            if (currentQuestion >= questions.length) {
+
+                document.getElementById("questions")
+                    .classList.add("hidden");
+
+                document.getElementById("passwordScreen")
+                    .classList.remove("hidden");
+
+                return;
+            }
+
+            const q = questions[currentQuestion];
+
+            document.getElementById("title").textContent = q.title;
+
+            document.getElementById("question").textContent =
+                q.question;
+
+            const buttons =
+                document.getElementById("buttons");
+
+            buttons.innerHTML = "";
+
+            q.answers.forEach(answer => {
+
+                const button = document.createElement("button");
+
+                button.textContent = answer;
+
+                button.onclick = nextQuestion;
+
+                buttons.appendChild(button);
+
+            });
+
+        }
+
+
+        function checkPassword() {
+
+            const password =
+                document.getElementById("password").value;
+
+            /*
+                ЗДЕСЬ МОЖНО ПОМЕНЯТЬ ПАРОЛЬ
+            */
+
+            const correctPassword = "29.07.2026";
+
+            const error =
+                document.getElementById("error");
+
+
+            if (password === correctPassword) {
+
+                document.getElementById("passwordScreen")
+                    .classList.add("hidden");
+
+                document.getElementById("secret")
+                    .style.display = "block";
+
+            } else {
+
+                error.textContent =
+                    "Кажется, пароль неправильный... Попробуй ещё раз ♡";
+
+                document.getElementById("password")
+                    .value = "";
+
+            }
+
+        }
+
+
+        function handleEnter(event) {
+
+            if (event.key === "Enter") {
+                checkPassword();
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
+
